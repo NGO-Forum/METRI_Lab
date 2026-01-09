@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../API/api";
-
+import AdminLayout from "../components/layout/AdminLayout";
 import LearningLabTable from "../components/learningLabs/LearningLabTable";
 import LearningLabForm from "../components/learningLabs/LearningLabForm";
 import DeleteLearningLabModal from "../components/learningLabs/DeleteLearningLabModal";
@@ -21,56 +21,59 @@ export default function LearningAdmin() {
   }, []);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
-            Learning Labs
-          </h1>
-          <p className="text-sm text-gray-500">
-            Manage learning lab sessions
-          </p>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-800">
+              Learning Labs
+            </h1>
+            <p className="text-sm text-gray-500">
+              Manage learning lab sessions
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              setSelected(null);
+              setShowForm(true);
+            }}
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium
+                     text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+          >
+            + Add Learning Lab
+          </button>
         </div>
 
-        <button
-          onClick={() => {
-            setSelected(null);
+        <LearningLabTable
+          labs={labs}
+          onEdit={(lab) => {
+            setSelected(lab);
             setShowForm(true);
           }}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium
-                     text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
-        >
-          + Add Learning Lab
-        </button>
+          onDelete={(lab) => {
+            setSelected(lab);
+            setShowDelete(true);
+          }}
+        />
+
+        {showForm && (
+          <LearningLabForm
+            lab={selected}
+            onClose={() => setShowForm(false)}
+            onSaved={loadLabs}
+          />
+        )}
+
+        {showDelete && (
+          <DeleteLearningLabModal
+            lab={selected}
+            onClose={() => setShowDelete(false)}
+            onDeleted={loadLabs}
+          />
+        )}
       </div>
+    </AdminLayout>
 
-      <LearningLabTable
-        labs={labs}
-        onEdit={(lab) => {
-          setSelected(lab);
-          setShowForm(true);
-        }}
-        onDelete={(lab) => {
-          setSelected(lab);
-          setShowDelete(true);
-        }}
-      />
-
-      {showForm && (
-        <LearningLabForm
-          lab={selected}
-          onClose={() => setShowForm(false)}
-          onSaved={loadLabs}
-        />
-      )}
-
-      {showDelete && (
-        <DeleteLearningLabModal
-          lab={selected}
-          onClose={() => setShowDelete(false)}
-          onDeleted={loadLabs}
-        />
-      )}
-    </div>
   );
 }

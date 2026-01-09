@@ -61,7 +61,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-base md:text-lg">
               <li>
-                <NavLink to="/register" className={navClass}>
+                <NavLink to="/interest" className={navClass}>
                   Register Interest
                 </NavLink>
               </li>

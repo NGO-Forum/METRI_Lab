@@ -19,7 +19,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="max-w-full mx-auto px-4 lg:px-12">
         <div className="flex items-center justify-between h-16">
 
           {/* LOGO */}
@@ -29,7 +29,7 @@ export default function Navbar() {
             className="flex items-center gap-2"
           >
             <span className="text-green-700 text-2xl">🌿</span>
-            <span className="font-bold text-lg sm:text-xl text-green-700">
+            <span className="font-bold text-xl md:text-2xl text-green-700">
               METRI Learning Lab
             </span>
           </NavLink>
@@ -41,7 +41,7 @@ export default function Navbar() {
               ["About", "/about"],
               ["Learning Topics", "/topics"],
               ["Schedule", "/schedule"],
-              ["Register", "/register"],
+              ["Register", "/interest"],
               ["FAQ", "/faq"],
               ["Contact", "/contact"],
             ].map(([label, path]) => (
@@ -99,20 +99,20 @@ export default function Navbar() {
       {/* MOBILE MENU */}
       <div
         className={`
-          fixed top-16 left-[55%] md:left-[75%] right-0 z-50 bg-white lg:hidden w-[40%] md:w-[20%]
+          fixed top-16 left-[53%] md:left-[75%] right-0 z-50 bg-gray-50 lg:hidden w-[41%] md:w-[20%]
           transform transition-all duration-300 ease-out
           ${open
             ? "translate-y-0 opacity-100"
             : "-translate-y-6 opacity-0 pointer-events-none"}
         `}
       >
-        <nav className="flex flex-col divide-y">
+        <nav className="flex flex-col divide-y text-base">
           {[
             ["Home", "/"],
             ["About", "/about"],
             ["Learning Topics", "/topics"],
             ["Schedule", "/schedule"],
-            ["Register", "/register"],
+            ["Register", "/interest"],
             ["FAQ", "/faq"],
             ["Contact", "/contact"],
           ].map(([label, path]) => (

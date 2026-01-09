@@ -1,4 +1,12 @@
 export default function LearningLabTable({ labs, onEdit, onDelete }) {
+  if (!labs.length) {
+    return (
+      <div className="rounded-lg border bg-white p-6 text-center text-sm text-gray-500">
+        No learning labs found.
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
       <table className="min-w-full divide-y divide-gray-200 text-sm">
@@ -18,9 +26,17 @@ export default function LearningLabTable({ labs, onEdit, onDelete }) {
               <td className="px-4 py-3 font-medium text-gray-800">
                 {lab.topic}
               </td>
-              <td className="px-4 py-3">{lab.date}</td>
+
+              <td className="px-4 py-3">
+                {new Date(lab.date).toLocaleDateString()}
+              </td>
+
               <td className="px-4 py-3">{lab.time}</td>
-              <td className="px-4 py-3">{lab.format}</td>
+
+              <td className="px-4 py-3 capitalize">
+                {lab.format.replace("_", " ")}
+              </td>
+
               <td className="px-4 py-3 text-right space-x-3">
                 <button
                   onClick={() => onEdit(lab)}

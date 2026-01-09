@@ -1,56 +1,229 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../../API/api";
 
-export default function Register() {
+/* ======================================================
+   SESSION HEADER
+====================================================== */
+function SessionHeader({ lab, formatDate }) {
+  return (
+    <div className="px-6 pt-6">
+      <h3 className="font-serif text-lg font-semibold text-green-700">
+        <span className="text-slate-600">Register for:</span> {lab.topic}
+      </h3>
+
+      <div className="text-sm text-slate-600 mt-2 space-y-1">
+        <p><strong>Date:</strong> {formatDate(lab.date)}</p>
+        <p><strong>Time:</strong> {lab.time}</p>
+        <p><strong>Format:</strong> {lab.format}</p>
+        <p><strong>Speakers / Trainers:</strong> {lab.speakers}</p>
+      </div>
+    </div>
+  );
+}
+
+/* ======================================================
+   INPUT COMPONENT
+====================================================== */
+function Input({ label, ...props }) {
+  return (
+    <div>
+      <label className="font-medium">{label}</label>
+      <input
+        {...props}
+        className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
+      />
+    </div>
+  );
+}
+
+/* ======================================================
+   REGISTRATION FORM
+====================================================== */
+function RegistrationForm({ learningLabId }) {
   const [form, setForm] = useState({
-    name: "",
+    full_name: "",
     organization: "",
+    role_position: "",
     email: "",
+    phone: "",
+    province: "",
+    is_ngof_member: null,
+    ngo_name: "",
+    payment_percentage: "",
+    special_needs: "",
+    consent: false,
   });
 
-  const submit = e => {
+  const handleChange = e => {
+    const { name, value, type, checked } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+  const navigate = useNavigate();
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    api.post("/learning-lab-registrations", form)
-      .then(() => alert("Registration submitted"))
-      .catch(() => alert("Error submitting form"));
+
+    try {
+      await api.post(`/learning-labs/${learningLabId}/register`, {
+        ...form,
+        is_ngof_member: Boolean(form.is_ngof_member),
+        payment_percentage:
+          form.is_ngof_member === false
+            ? Number(form.payment_percentage)
+            : null,
+      });
+
+      // ✅ Redirect to Thank You page
+      navigate("/thank-you");
+    } catch (err) {
+      alert(err.response?.data?.message || "Registration failed");
+    }
   };
 
+
   return (
-    <section id="register" className="py-16 bg-gray-50">
-      <div className="max-w-xl mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-6 text-center">
-          Register Interest
-        </h2>
+    <form onSubmit={handleSubmit} className="px-6 pt-6 pb-6 space-y-4 text-sm">
 
-        <form onSubmit={submit} className="space-y-4">
-          <input
-            className="w-full p-3 border rounded"
-            placeholder="Full Name"
-            required
-            onChange={e => setForm({ ...form, name: e.target.value })}
-          />
+      <Input label="Full Name *" name="full_name" value={form.full_name} onChange={handleChange} required />
+      <Input label="Organization / Affiliation *" name="organization" value={form.organization} onChange={handleChange} required />
+      <Input label="Role / Position *" name="role_position" value={form.role_position} onChange={handleChange} required />
+      <Input label="Email *" name="email" type="email" value={form.email} onChange={handleChange} required />
+      <Input label="Phone Number (optional)" name="phone" value={form.phone} onChange={handleChange} />
+      <Input label="Province / Region in Cambodia" name="province" value={form.province} onChange={handleChange} />
 
+      {/* NGOF MEMBER */}
+      <div>
+        <label className="font-medium block mb-2">
+          Are you an NGOF member? *
+        </label>
+
+        <label className="flex items-center gap-2">
           <input
-            className="w-full p-3 border rounded"
-            placeholder="Organization"
-            required
-            onChange={e =>
-              setForm({ ...form, organization: e.target.value })
+            type="radio"
+            name="is_ngof_member"
+            checked={form.is_ngof_member === true}
+            onChange={() =>
+              setForm(prev => ({
+                ...prev,
+                is_ngof_member: true,
+                payment_percentage: "",
+              }))
             }
           />
+          Yes, my organization is an NGOF member
+        </label>
 
+        <label className="flex items-center gap-2 mt-2">
           <input
-            type="email"
-            className="w-full p-3 border rounded"
-            placeholder="Email"
-            required
-            onChange={e => setForm({ ...form, email: e.target.value })}
+            type="radio"
+            name="is_ngof_member"
+            checked={form.is_ngof_member === false}
+            onChange={() =>
+              setForm(prev => ({
+                ...prev,
+                is_ngof_member: false,
+                ngo_name: "",
+              }))
+            }
           />
+          No, we are not an NGOF member
+        </label>
+      </div>
 
-          <button className="w-full bg-green-700 text-white py-3 rounded">
-            Submit
-          </button>
-        </form>
+      {form.is_ngof_member === true && (
+        <Input
+          label="NGO Name *"
+          name="ngo_name"
+          value={form.ngo_name}
+          onChange={handleChange}
+          required
+        />
+      )}
+
+      {form.is_ngof_member === false && (
+        <div>
+          <label className="font-medium">Payment Percentage *</label>
+          <select
+            name="payment_percentage"
+            value={form.payment_percentage}
+            onChange={handleChange}
+            required
+            className="w-full mt-1 border rounded-lg px-4 py-2"
+          >
+            <option value="">Select payment</option>
+            <option value="25">25%</option>
+            <option value="50">50%</option>
+            <option value="100">100%</option>
+          </select>
+        </div>
+      )}
+
+      <div>
+        <label className="font-medium">
+          Any special needs or accessibility requirements?
+        </label>
+        <textarea
+          name="special_needs"
+          rows="3"
+          value={form.special_needs}
+          onChange={handleChange}
+          className="w-full mt-1 border rounded-lg px-4 py-2"
+        />
+      </div>
+
+      <div className="flex items-start gap-2">
+        <input
+          type="checkbox"
+          name="consent"
+          checked={form.consent}
+          onChange={handleChange}
+          required
+        />
+        <span className="text-xs text-slate-600">
+          I agree that the NGO Forum on Cambodia may contact me regarding this session.
+        </span>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-green-700 hover:bg-green-800 text-white py-3 rounded-full"
+      >
+        Complete Registration
+      </button>
+    </form>
+  );
+}
+
+/* ======================================================
+   REGISTER PAGE (DEFAULT EXPORT)
+====================================================== */
+export default function Register() {
+  const { id } = useParams();
+  const [lab, setLab] = useState(null);
+
+  useEffect(() => {
+    api.get(`/learning-labs/${id}`).then(res => setLab(res.data));
+  }, [id]);
+
+  const formatDate = date =>
+    new Date(date).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+  if (!lab) return <p className="p-10 text-center">Loading...</p>;
+
+  return (
+    <section className="min-h-screen bg-slate-50 py-10 px-4">
+      <div className="max-w-xl mx-auto bg-white rounded-2xl shadow">
+        <SessionHeader lab={lab} formatDate={formatDate} />
+        <RegistrationForm learningLabId={lab.id} />
       </div>
     </section>
   );
