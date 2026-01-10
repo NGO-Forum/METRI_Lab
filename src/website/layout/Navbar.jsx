@@ -106,7 +106,7 @@ export default function Navbar() {
             : "-translate-y-6 opacity-0 pointer-events-none"}
         `}
       >
-        <nav className="flex flex-col divide-y text-base">
+        <nav className="flex flex-col divide-y text-sm">
           {[
             ["Home", "/"],
             ["About", "/about"],

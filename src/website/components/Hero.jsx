@@ -25,7 +25,7 @@ export default function Hero() {
             {/* BUTTON GROUP */}
             <div className="mt-6 md:mt-10 flex flex-wrap gap-4 md:gap-2 lg:gap-5">
               <a
-                href="/register"
+                href="/interest"
                 className="inline-flex items-center gap-2 rounded-full
                            bg-green-700 px-6 sm:px-7 py-3 sm:py-4
                            text-white text-sm font-medium
