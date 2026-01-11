@@ -1,20 +1,29 @@
 export default function Hero() {
   return (
     <section className="bg-gray-50">
-      <div className="max-w-full mx-auto px-6 md:px-20 py-10 md:py-20">
+      <div className="max-w-full mx-auto px-6 md:px-16 lg:px-20 py-10 md:py-10">
 
         {/* GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
 
           {/* LEFT CONTENT */}
           <div className="lg:order-1 order-2">
-            <h1 className="font-serif text-2xl md:text-5xl lg:text-[3rem] leading-tight font-semibold text-slate-900">
-              Are you ready to make <br /> <br />
-              yourself and your <br /> <br />
-              organization more <br /><br />
-              resilient, innovative, and <br /><br />
-              transformative?
+            <h1 className="font-serif text-[1.2rem] md:text-[1.9rem] lg:text-[2.7rem] leading-[1.5] font-semibold text-slate-900">
+              {/* Mobile & Tablet */}
+              <span className="lg:hidden">
+                Are you ready to make yourself and your organization more resilient, innovative, and transformative?
+              </span>
+
+              {/* Desktop */}
+              <span className="hidden lg:block">
+                <span className="block">Are you ready to make</span>
+                <span className="block">yourself and your</span>
+                <span className="block">organization more</span>
+                <span className="block">resilient, innovative, and</span>
+                <span className="block">transformative?</span>
+              </span>
             </h1>
+
 
             <p className="mt-5 md:mt-8 max-w-xl text-slate-600 text-base sm:text-lg leading-relaxed">
               Join a national Learning Lab that strengthens capacity, connects

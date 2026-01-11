@@ -9,17 +9,23 @@ export default function ThankYou() {
           Thank You for Registering 🎉
         </h1>
 
-        <p className="text-slate-600 mb-6">
+        <p className="text-slate-600 mb-6 leading-relaxed">
           Your registration has been received successfully.
           <br />
-          We will contact you with further details.
+          We will send the <strong>Zoom meeting link</strong> to your email
+          <strong> three (3) days before</strong> the METRI Learning Lab begins.
+        </p>
+
+        <p className="text-sm text-slate-500 mb-6">
+          Please make sure to check your inbox (and spam folder) closer to
+          the session date.
         </p>
 
         <Link
-          to="/schedule"
-          className="inline-block bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-full transition"
+          to="/"
+          className="inline-block bg-green-700 hover:bg-green-800 text-white px-4 py-1 rounded-full transition"
         >
-          Back to Schedule
+          Go to METRI Learning Lab
         </Link>
 
       </div>

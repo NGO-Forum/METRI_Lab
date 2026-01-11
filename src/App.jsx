@@ -14,6 +14,7 @@ import ThankYou from "./website/pages/ThankYou";
 import FAQ from "./website/pages/FAQ";
 import Contact from "./website/pages/Contact";
 import Interest from "./website/pages/RegisterInterest";
+import ScrollToTop from "./website/components/ScrollTop";
 
 
 /* Admin */
@@ -36,6 +37,7 @@ export default function App() {
   return (
     <>
       {/* WEBSITE LAYOUT */}
+      <ScrollToTop />
       {!hideLayout && <Navbar />}
 
       <Routes>

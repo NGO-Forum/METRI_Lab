@@ -91,7 +91,7 @@ export default function Schedule() {
                 ✓
               </span>
               <span>
-                Scholarship options available: 25%, 50%,
+                Scholarship options available: 25%, 50%, 75%
                 or 100% support
               </span>
             </li>

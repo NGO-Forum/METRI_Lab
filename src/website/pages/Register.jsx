@@ -146,26 +146,42 @@ function RegistrationForm({ learningLabId }) {
       )}
 
       {form.is_ngof_member === false && (
-        <div>
-          <label className="font-medium">Payment Percentage *</label>
-          <select
-            name="payment_percentage"
-            value={form.payment_percentage}
-            onChange={handleChange}
-            required
-            className="w-full mt-1 border rounded-lg px-4 py-2"
-          >
-            <option value="">Select payment</option>
-            <option value="25">25%</option>
-            <option value="50">50%</option>
-            <option value="100">100%</option>
-          </select>
+        <div className="space-y-3">
+
+          {/* Info message */}
+          <div className="rounded-lg bg-yellow-50 border border-yellow-200 p-4 text-xs text-slate-700 leading-relaxed">
+            <strong>Non-NGOF members:</strong> are required to pay a registration fee
+            of <strong>USD 250</strong> per participant. Organizations or individuals
+            unable to afford the fee may apply for partial sponsorship.
+          </div>
+
+          {/* Sponsorship select */}
+          <div>
+            <label className="font-medium">
+              Available Sponsorship Offerred *
+            </label>
+            <select
+              name="payment_percentage"
+              value={form.payment_percentage}
+              onChange={handleChange}
+              required
+              className="w-full mt-1 border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
+            >
+              <option value="">Select</option>
+              <option value="25">25%</option>
+              <option value="50">50%</option>
+              <option value="75">75%</option>
+              <option value="100">100%</option>
+            </select>
+          </div>
+
         </div>
       )}
 
+
       <div>
         <label className="font-medium">
-          Any special needs or accessibility requirements?
+          Any special needs or accessibility requirements? (optional)
         </label>
         <textarea
           name="special_needs"
