@@ -42,6 +42,7 @@ function Input({ label, ...props }) {
    REGISTRATION FORM
 ====================================================== */
 function RegistrationForm({ learningLabId }) {
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     full_name: "",
     organization: "",
@@ -62,6 +63,13 @@ function RegistrationForm({ learningLabId }) {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    // Clear error when user edits the field
+    setErrors(prev => ({
+      ...prev,
+      [name]: null,
+    }));
+
   };
   const navigate = useNavigate();
 
@@ -81,8 +89,14 @@ function RegistrationForm({ learningLabId }) {
       // ✅ Redirect to Thank You page
       navigate("/thank-you");
     } catch (err) {
-      alert(err.response?.data?.message || "Registration failed");
+      if (err.response?.status === 422) {
+        setErrors(err.response.data.errors || {});
+        return;
+      }
+
+      alert("Registration failed. Please try again.");
     }
+
   };
 
 
@@ -93,6 +107,11 @@ function RegistrationForm({ learningLabId }) {
       <Input label="Organization / Affiliation *" name="organization" value={form.organization} onChange={handleChange} required />
       <Input label="Role / Position *" name="role_position" value={form.role_position} onChange={handleChange} required />
       <Input label="Email *" name="email" type="email" value={form.email} onChange={handleChange} required />
+      {errors.email && (
+        <p className="text-red-600 text-xs mt-1">
+          {errors.email[0]}
+        </p>
+      )}
       <Input label="Phone Number (optional)" name="phone" value={form.phone} onChange={handleChange} />
       <Input label="Province / Region in Cambodia" name="province" value={form.province} onChange={handleChange} />
 
@@ -200,7 +219,7 @@ function RegistrationForm({ learningLabId }) {
           onChange={handleChange}
           required
         />
-        <span className="text-xs text-slate-600">
+        <span className="text-xs text-slate-600 -mt-1">
           I agree that the NGO Forum on Cambodia may contact me regarding this session.
         </span>
       </div>

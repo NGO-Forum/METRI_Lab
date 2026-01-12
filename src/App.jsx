@@ -24,6 +24,7 @@ import AdminLogin from "./admin/pages/Login";
 import InterestRegistrations from "./admin/pages/InterestRegistrations";
 import Registrations from "./admin/pages/Registrations";
 import DetailRegister from "./admin/pages/DetailRegister";
+import ForgotPassword from "./admin/pages/ForgotPassword";
 
 export default function App() {
   const location = useLocation();
@@ -57,6 +58,8 @@ export default function App() {
 
         {/* ADMIN (NO NAVBAR / FOOTER) */}
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+
 
         <Route
           path="/admin/learning-labs"

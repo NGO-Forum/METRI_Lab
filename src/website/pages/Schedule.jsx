@@ -24,12 +24,16 @@ export default function Schedule() {
   }, []);
 
   // Normalize format for filtering safety
-  const normalizeFormat = format => {
+  const normalizeFormat = (format) => {
     if (!format) return "";
+
     const f = format.toLowerCase();
+
+    if (f.includes("hybrid")) return "hybrid";
     if (f.includes("online") && f.includes("person")) return "hybrid";
     if (f.includes("online")) return "online";
     if (f.includes("person")) return "in_person";
+
     return "";
   };
 
