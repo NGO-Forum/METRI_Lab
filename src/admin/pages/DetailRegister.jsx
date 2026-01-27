@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../API/api";
 import AdminLayout from "../components/layout/AdminLayout";
+import ExportButton from "../components/learningLabs/ExportButton";
 
 export default function Registrations() {
   const { id } = useParams();
@@ -17,9 +18,14 @@ export default function Registrations() {
 
   return (
     <AdminLayout>
-      <h2 className="text-xl font-semibold mb-6">
-        Registrations List
-      </h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-semibold">
+          Registrations List
+        </h2>
+
+        <ExportButton labId={id} />
+      </div>
+
 
       <div className="bg-white rounded-lg shadow overflow-x-auto">
         <table className="w-full text-sm">
